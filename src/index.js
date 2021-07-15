@@ -11,13 +11,14 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import NewSearch from './components/NewSearch';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       {/* The switch component allows us to move from components depending on the path */}
       <Switch>
-        <Route path="/search" component={Search}/>
+        <Route path="/search" component={NewSearch}/>
         <Route path="/">
           <SearchPage />
         </Route>
