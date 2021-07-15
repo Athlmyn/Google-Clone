@@ -2,13 +2,12 @@ import * as React from "react";
 import { IAPI, ICommonQuestion, IResult, ISubResult } from "./api-types";
 import { SearchHead } from "./SearchHead";
 import "./Search.css";
+import { NewResult } from "./NewResult";
+import { NewRelatedQuestion } from "./NewRelatedQuestion";
 
-//import RelatedQuestions from "./RelatedQuestions";
-//import Result from "./Result";
+interface IAppProps {}
 
-export interface IAppProps {}
-
-export interface IAppState {
+interface IAppState {
   results: IAPI;
   hasLoaded: boolean;
 }
@@ -21,12 +20,15 @@ export default class NewSearch extends React.Component<IAppProps, IAppState> {
       hasLoaded: false,
     };
   }
+
   //Called immediately after a component is mounted. Setting state here will trigger re-rendering.
   componentDidMount() {
+    console.log("componentDidMount");
     this.populateResults();
   }
 
   async populateResults() {
+    console.log("populateResults");
     const response = await fetch(
       "https://ushop-gcp.uc.r.appspot.com/api/search/react"
     );
@@ -38,20 +40,30 @@ export default class NewSearch extends React.Component<IAppProps, IAppState> {
   }
 
   loadContent() {
-      if (this.state.hasLoaded === false){
-          return <h1>Content is still loading</h1>
-      }
-      return (
-          <div>
-              <p>{`About ${this.state.results.resultCount} results (${this.state.results.performance}) `}</p>
+    console.log("loadContent");
+    if (this.state.hasLoaded === false) {
+      return <h1>Content is still loading</h1>;
+    }
+    return (
+      <div>
+        <p>{`About ${this.state.results.resultCount} results (${this.state.results.performance}) `}</p>
+        {this.state.results.results.map((x) => (
+          <NewResult
+            body={x.body}
+            url={x.url}
+            title={x.title}
+            type={x.type}
+            subResults={x.subResults}
+          />
+        ))}
+        <NewRelatedQuestion questions={this.state.results.commonQuestions} />
 
-              
-          </div>
-      );
-
+      </div>
+    );
   }
 
   public render() {
+    console.log("render");
     let contents = this.loadContent();
 
     return (
