@@ -35,18 +35,26 @@ export default class NewSearch extends React.Component<IAppProps, IAppState> {
     const data = (await response.json()) as IAPI;
 
     // Sleeps for 2 seconds then continue to simulate loading the page
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 5000));
     this.setState({ results: data, hasLoaded: true });
   }
 
   loadContent() {
     console.log("loadContent");
     if (this.state.hasLoaded === false) {
-      return <h1>Content is still loading</h1>;
+      return (
+        <div>
+          <h1>Content is still loading</h1>
+          <p>Hola desde el primer estado</p>
+        </div>
+      );
     }
+
+    
     return (
       <div>
         <p>{`About ${this.state.results.resultCount} results (${this.state.results.performance}) `}</p>
+        <NewRelatedQuestion questions={this.state.results.commonQuestions} />
         {this.state.results.results.map((x) => (
           <NewResult
             body={x.body}
@@ -56,8 +64,6 @@ export default class NewSearch extends React.Component<IAppProps, IAppState> {
             subResults={x.subResults}
           />
         ))}
-        <NewRelatedQuestion questions={this.state.results.commonQuestions} />
-
       </div>
     );
   }
@@ -71,9 +77,7 @@ export default class NewSearch extends React.Component<IAppProps, IAppState> {
       <div className="main_container">
         <SearchHead />
 
-        <div className="body_left">
-            {contents}
-        </div>
+        <div className="body_left">{contents}</div>
 
         {/* This can be a separate new component ---------------------------------------------------------------------- */}
         <div className="body_right">right</div>

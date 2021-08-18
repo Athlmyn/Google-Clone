@@ -11,22 +11,16 @@ function printSubResults(props: ISubResult) {
 }
 
 export function NewResult(props: IResult) {
-  //let hasSubResults = props.subResults !=null;
-  //let additionalContent;
-  //if (hasSubResults){
-  //  additionalContent += props.subResults.map(x => printSubResults(x))
-  //}
-
+  
   return (
     <div className="result">
       <a href={props.url}>
         <div>
           <p>{props.url}</p>
-          <h3>{props.title}</h3>
+          <h2>{props.title}</h2>
         </div>
       </a>
       <p>{props.body}</p>
-
       {props.subResults?.map((x) => printSubResults(x))}
     </div>
   );
